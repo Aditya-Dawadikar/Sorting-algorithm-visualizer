@@ -1,4 +1,4 @@
-function swap(i, j)
+function swap(arr,i, j)
 {
     var temp = arr[i];
     arr[i] = arr[j];
@@ -6,23 +6,23 @@ function swap(i, j)
 }
 
 //bubble sort
-async function bubbleSort(){
-    clearCanvas();
+async function bubbleSort(canvas,arr){
+    clearCanvas(canvas)
     for(var i = 0; i < arr.length; i++){
         for(var j = 0; j < ( arr.length - i -1 ); j++){
             await delay()
             if(arr[j] > arr[j+1]){   
-                swap(j,j+1);            
-            }
-            clearCanvas();
-            drawBars(arr)
+                swap(arr,j,j+1);            
+            }        
+            clearCanvas(canvas)
+            drawBars(canvas,arr)
         }
     }
 }
 
 //insertion sort
-async function insertionSort(){
-    clearCanvas()
+async function insertionSort(canvas,arr){
+    clearCanvas(canvas)
     for(var i=1;i<arr.length;i++){
         let temp = arr[i]
         let j=i-1
@@ -30,16 +30,16 @@ async function insertionSort(){
             await delay()
             arr[j+1]=arr[j]
             j--;
-            clearCanvas();
-            drawBars(arr)
+            clearCanvas(canvas)
+            drawBars(canvas,arr)
         }
         arr[j+1]=temp;
     }
 }
 
 //selection sort
-async function selectionSort(){
-    clearCanvas()
+async function selectionSort(canvas,arr){
+    clearCanvas(canvas)
     for(var i=0;i<arr.length-1;i++){
         var minIndex=i;
         for(j=i+1;j<arr.length;j++){
@@ -47,50 +47,60 @@ async function selectionSort(){
             if(arr[j]<arr[minIndex]){
                 minIndex=j;
             }
-            clearCanvas();
-            drawBars(arr)
+            
+            clearCanvas(canvas)
+            drawBars(canvas,arr)
         }
-        swap(minIndex,i)
+        swap(arr,minIndex,i)
     }
-    clearCanvas();
-    drawBars(arr)
+    
+    clearCanvas(canvas)
+    drawBars(canvas,arr)
 }
 
 
 //quick sort
-async function partition(low,high){
+async function partition(canvas,arr,low,high){
+    // console.log(arr)
     var pivot = arr[high]
     var i = low-1;
     for(var j=low;j<high;j++){
         await delay()
         if(arr[j]<pivot){
             i++;
-            swap(i,j)
+            swap(arr,i,j)
         }
-        clearCanvas()
-        drawBars(arr)
+        
+        clearCanvas(canvas)
+        drawBars(canvas,arr)
     }
-    swap(i+1,high)
+    swap(arr,i+1,high)
     return i+1
 }
 
-async function quickSort(low,high){
+async function quickSort(canvas,arr,low,high){
     if(low<high){
-        var mid = await partition(low,high)
-        quickSort(low,mid-1)
-        quickSort(mid+1,high)
+        var mid = await partition(canvas,arr,low,high)
+        quickSort(canvas,arr,low,mid-1)
+        clearCanvas(canvas)
+        drawBars(canvas,arr)
+
+        quickSort(canvas,arr,mid+1,high)
+        clearCanvas(canvas)
+        drawBars(canvas,arr)
     }
-    clearCanvas()
-    drawBars(arr)
+    
+    clearCanvas(canvas)
+    drawBars(canvas,arr)
 }
 
-function startQuickSort(){
-    clearCanvas()
-    quickSort(0,arr.length-1);
+async function startQuickSort(canvas,arr){
+    clearCanvas(canvas)
+    await quickSort(canvas,arr,0,arr.length-1);
 }
 
 //merge sort
-async function merge(l,m,r){
+async function merge(canvas,arr,l,m,r){
 
     var n1 = m-l+1
     var n2 = r-m
@@ -120,52 +130,53 @@ async function merge(l,m,r){
             j++;
         }
         k++;
-        clearCanvas()
-        drawBars(arr)
+        clearCanvas(canvas)
+        drawBars(canvas,arr)
     }
     while (i < n1) {
         await delay()
         arr[k] = left[i];
         i++;
         k++;
-        clearCanvas()
-        drawBars(arr)
+        clearCanvas(canvas)
+        drawBars(canvas,arr)
     }
     while (j < n2) {
         await delay()
         arr[k] = right[j];
         j++;
         k++;
-        clearCanvas()
-        drawBars(arr)
+        clearCanvas(canvas)
+        drawBars(canvas,arr)
     }
 
 }
 
-async function mergeSort(l,r){
+async function mergeSort(canvas,arr,l,r){
     if(l>=r){
         return
     }
     var m = l + parseInt((r-l)/2)
 
     await delay()
-    await mergeSort(l,m)
-    clearCanvas()
-    drawBars(arr)
+    await mergeSort(canvas,arr,l,m)
+    clearCanvas(canvas)
+    drawBars(canvas,arr)
     
     await delay()
-    await mergeSort(m+1,r)
-    clearCanvas()
-    drawBars(arr)
+    await mergeSort(canvas,arr,m+1,r)
+    clearCanvas(canvas)
+    drawBars(canvas,arr)
     
     await delay()
-    await merge(l,m,r)
-    
+    await merge(canvas,arr,l,m,r)
+    clearCanvas(canvas)
+    drawBars(canvas,arr)
 }
 
-async function startMergeSort(){
-    clearCanvas()
-    await mergeSort(0,arr.length)
-    clearCanvas()
-    drawBars(arr)
+async function startMergeSort(canvas,arr){
+    clearCanvas(canvas)
+    await mergeSort(canvas,arr,0,arr.length)
+    clearCanvas(canvas)
+    drawBars(canvas,arr)
 }

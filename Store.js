@@ -1,14 +1,12 @@
-var canvas = document.getElementById('canvas');
-
 var controller={
     canvas:{
-        width:549,
-        height:500
+        width:250,
+        height:250
     },
     bar:{
-        count:50,
+        count:20,
         gap:1
     }
 }
 
-let arr=[];
+var d = new Date();

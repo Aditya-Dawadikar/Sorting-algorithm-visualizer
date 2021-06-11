@@ -1,4 +1,4 @@
-function drawBar(rectangle){
+function drawBar(canvas,rectangle){
     var ctx = canvas.getContext("2d");
     ctx.beginPath();
     ctx.rect(rectangle.pos.x, rectangle.pos.y, rectangle.size.w, rectangle.size.h);
@@ -6,11 +6,13 @@ function drawBar(rectangle){
     ctx.fill();
 }
 
-function drawBars(rects){
+function drawBars(canvas,rects){
     rects.map((height,index)=>{
+        var offset = getOffset()
+        
         let newRec={
             pos:{
-                x:10*index+index,
+                x:getBarWidht()*index+index+offset,
                 y:controller.canvas.height-height,
             },
             size:{
@@ -18,28 +20,23 @@ function drawBars(rects){
                 h:height
             }
         }
-        drawBar(newRec)
+        drawBar(canvas,newRec)
     })
 }
 
-function clearCanvas() {
-    var ctx = document.getElementById("canvas").getContext("2d");
-    ctx.clearRect(0, 0, 549, 500);
+function clearCanvas(canvas) {
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, controller.canvas.width, controller.canvas.height);
 }
 
 function getBarWidht(){
-    return Math.floor((controller.canvas.width-(controller.bar.count*controller.bar.gap))/controller.bar.count)
-}
-
-function populate(){
-    arr=[]
-    clearCanvas()
-    for(let i=0;i<50;i++){
-        arr.push(Math.floor((Math.random() * 500) + 1))
-    }
-    drawBars(arr)
+    return Math.floor((controller.canvas.width/controller.bar.count)-controller.bar.gap)
 }
 
 function delay(){
     return new Promise(resolve => setTimeout(resolve,0));
+}
+
+function getOffset(){
+    return Math.floor((controller.canvas.width-(controller.bar.count*getBarWidht()))/5.5)
 }
